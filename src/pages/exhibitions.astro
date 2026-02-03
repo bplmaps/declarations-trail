@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+import H1 from "../components/h1.astro";
+import InfoLayout from "../layouts/InfoLayout.astro";
+import ACGenerator from "../assets/ac-generator.jpg";
+import FluidPropulsion from "../assets/fluid-propulsion.jpg";
+import ElectricMotor from "../assets/electro-magnetic-motor.jpg";
+
+const exhibitions = [
+     {
+          title: "Declarations: Printing a New Nation",
+          institution: "Boston Public Library and Leventhal Center",
+          description: "Transform mechanical energy into alternating current, powering the modern electric grid",
+          date: "April 11, 2026 – August xx, 2026",
+          link: "https://www.leventhalmap.org/exhibitions/",
+          image: ACGenerator
+     },
+     {
+          title: "Fluid Propulsion",
+          description: "Bladeless turbine using fluid dynamics for efficient, low-friction propulsion.",
+          image: FluidPropulsion
+     },
+     {
+          title: "Electro-Magnetic Motor",
+          description: "Harness alternating current to produce smooth, efficient rotary motion.",
+          image: ElectricMotor
+     },
+     {
+          title: "Electro-Magnetic Motor",
+          description: "Harness alternating current to produce smooth, efficient rotary motion.",
+          image: ElectricMotor
+     }];
+---
+
+<InfoLayout>
+     <div class="p-4 sm:pt-8 sm:px-12 pb-20 min-h-dvh">
+          <H1> Exhibitions </H1>
+
+          <ul class="mt-4 sm:mt-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16 sm:gap-8">
+               {exhibitions.map((exhibition) => (
+                    <li>
+                         <Image src={exhibition.image} alt={exhibition.title} class="aspect-5/3 object-center object-cover rounded-lg shadow-lg mb-4 sm:mb-0 sm:mr-4" />
+                         <div class="p-1 sm:p-2">
+                              {exhibition.institution && (
+                                <span
+                                  class="block text-sm text-zinc-400 weight-semibold text-balance w-fit mb-2"
+                                  style="
+                                    display: inline-block;
+                                    border-bottom: 6px solid rgba(113,113,122,0.3); /* zinc-400 30% */
+                                    line-height: 1.1;
+                                    position: relative;
+                                    bottom: 0.3em;
+                                  "
+                                >
+                                  {exhibition.institution}
+                                </span>
+                              )}
+                              <h2 class="font-serif italic text-4xl text-zinc-100">{exhibition.title}</h2>
+                              <p class="text-sm text-zinc-400 text-balance">{exhibition.description}</p>
+                              <p class="text-sm text-zinc-400 text-balance">{exhibition.date}</p>
+                         <a
+                              href={exhibition.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-zinc-100 text-zinc-900 font-semibold text-sm uppercase tracking-wide ring-2 ring-transparent hover:ring-zinc-100 hover:ring-3 transition-all duration-200 shadow group mt-4 cursor-pointer"
+                              style="text-decoration: none;"
+                         >
+                              Learn more
+                              <svg
+                                   class="ml-1 w-5 h-5 transition-transform duration-200 group-hover:translate-x-1"
+                                   xmlns="http://www.w3.org/2000/svg"
+                                   fill="none"
+                                   viewBox="0 0 24 24"
+                                   stroke="currentColor"
+                                   stroke-width="2"
+                              >
+                                   <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                              </svg>
+                         </a>
+                         </div>
+                    </li>
+               ))}
+          </ul>
+     </div>
+</InfoLayout>

@@ -1,0 +1,35 @@
+---
+import H1 from "../components/h1.astro";
+import Link from "../components/link.astro";
+import Navigation from "../components/navigation.svelte";
+import RootLayout from "../layouts/RootLayout.astro";
+import AvailableForWork from "../components/available.astro";
+---
+
+<RootLayout>
+	<main>
+		<div class="group relative w-full min-h-dvh flex items-center justify-center">
+			<div class="p-4 sm:p-8 absolute w-full h-dvh flex flex-col justify-between z-10">
+				<div class="font-serif">
+					<H1 size="large">Declarations<br />Trail</H1>
+					<p class="text-gray-200 italic text-xl lg:text-2xl w-2/3 mt-4">Explore America’s founding document in a whole new way. At four sites in and around Boston, see a dozen rare copies of the Declaration of Independence—different printings, created for different audiences—brought together on public view in multiple exhibition settings.</p>
+				</div>
+
+				<div>
+					<!-- <AvailableForWork className="py-4" /> -->
+					<div class="mb-2 sm:mb-4 flex items-center justify-between">
+						<div class="flex items-center gap-4">
+							<Link href="/exhibitions">Exhibitions</Link>
+							<Link href="/map" variant="secondary">Map</Link>
+						</div>
+
+						<Navigation client:load>
+							<Link href="/events" variant="secondary">Events</Link>
+							<Link href="/about" variant="secondary">About</Link>
+						</Navigation>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</RootLayout>

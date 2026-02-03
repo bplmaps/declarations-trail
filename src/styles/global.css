@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@fontsource/sedan";
+@import "@fontsource/sedan/400-italic.css";
+@plugin '@tailwindcss/typography';
+
+
+@theme inline {
+	--font-sans: var(--font-geist);
+	--font-serif: "Sedan", serif;
+}

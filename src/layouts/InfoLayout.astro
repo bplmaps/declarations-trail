@@ -1,0 +1,19 @@
+---
+import RootLayout from "./RootLayout.astro";
+import Footer from "../components/footer.astro";
+
+const { title, description } = Astro.props;
+
+const pathname = Astro.url.pathname;
+---
+
+<RootLayout title={title} description={description}>
+	<div class="flex relative gap-4 w-full max-w-screen-xl">
+		<main class="relative"  >
+			<slot />
+			<Footer />
+		</main>
+
+
+	</div>
+</RootLayout>
