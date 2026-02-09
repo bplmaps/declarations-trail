@@ -1,0 +1,42 @@
+---
+import InfoLayout from "../layouts/InfoLayout.astro";
+import H1 from "../components/h1.astro";
+---
+
+<InfoLayout>
+	<div class="p-4 sm:pt-8 sm:px-12 pb-20 min-h-dvh flex flex-col justify-between gap-32">
+		<div class="space-y-4 sm:space-y-12">
+			 <H1> Map </H1>
+
+
+		<div id="map"></div>
+
+   </div>
+</InfoLayout>
+
+<style>
+	#map {
+		background-color: red;
+		height: 80px;
+		width: 100%;
+	}
+</style>
+
+<script>
+	import "ol/ol.css";
+	import Map from "ol/Map";
+	import View from "ol/View";
+	import TileLayer from "ol/layer/Tile";
+	import OSM from "ol/source/OSM";
+
+	document.addEventListener("DOMContentLoaded", () => {
+		const target = document.getElementById("map");
+		if (!target) return;
+
+		new Map({
+			target,
+			layers: [new TileLayer({ source: new OSM() })],
+			view: new View({ center: [0, 0], zoom: 2 }),
+		});
+	});
+</script>

@@ -15,6 +15,7 @@
     "astro": "^5.7.5",
     "astro-loading-indicator": "^0.7.0",
     "clsx": "^2.1.1",
+    "ol": "^10.7.0",
     "sharp": "^0.34.1",
     "svelte": "^5.0.0",
     "tailwindcss": "^4.1.4"

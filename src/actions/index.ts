@@ -1,3 +1,1 @@
-import { categories } from "./categories";
-
-export const server = { categories }
+export const server = {}

@@ -1,0 +1,53 @@
+---
+import H1 from "../../components/h1.astro";
+import { formatDate } from "../../lib/utils";
+import { getCollection } from "astro:content";
+import InfoLayout from "../../layouts/InfoLayout.astro";
+
+const allEvents = await getCollection("events");
+const events = allEvents
+  .filter((event) => !event.data.isDraft)
+  .sort(
+    (a, b) =>
+      new Date(a.data.eventDate).getTime() - new Date(b.data.eventDate).getTime()
+  );
+---
+
+<InfoLayout>
+  <div class="p-4 sm:pt-8 sm:px-12 pb-20 min-h-dvh">
+    <H1>Events</H1>
+
+    <ul class="mt-4 sm:mt-12 space-y-6">
+      {events.map((event) => (
+        <li class="space-y-2">
+          <h2 class="text-xl xl:text-2xl text-zinc-300 text-balance font-medium">
+            {event.data.title}
+          </h2>
+          {event.data.institution && (
+            <div class="text-base text-zinc-400">
+              <span>{event.data.institution}</span>
+            </div>
+          )}
+          <p class="text-base text-zinc-400">{event.data.snippet}</p>
+          <p class="text-sm text-zinc-500">
+            {formatDate(event.data.eventDate, { withTime: true })}
+            {event.data.url && (
+              <>
+                {" "}&middot;{" "}
+                <a
+                  href={event.data.url}
+                  class="underline text-zinc-400 hover:text-zinc-300"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  More info
+                </a>
+              </>
+            )}
+          </p>
+
+        </li>
+      ))}
+    </ul>
+  </div>
+</InfoLayout>
