@@ -1,10 +1,12 @@
 @import "tailwindcss";
+@import "@fontsource/geist-sans";
 @import "@fontsource/sedan";
 @import "@fontsource/sedan/400-italic.css";
 @plugin '@tailwindcss/typography';
 
 
 @theme inline {
+	--font-geist: "Geist Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
 	--font-sans: var(--font-geist);
 	--font-serif: "Sedan", serif;
 }
