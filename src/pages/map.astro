@@ -2,11 +2,12 @@
 import InfoLayout from "../layouts/InfoLayout.astro";
 import H1 from "../components/h1.astro";
 import MapViewer from "../components/MapViewer.svelte";
+import { exhibitions } from "../data/exhibitions";
 ---
 
 <InfoLayout>
 
 	<div class="fixed inset-0 w-screen h-screen ">
-		<MapViewer client:load />
+		<MapViewer client:only="svelte" exhibitions={exhibitions} />
 	</div>
 </InfoLayout>

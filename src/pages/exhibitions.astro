@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import H1 from "../components/h1.astro";
 import InfoLayout from "../layouts/InfoLayout.astro";
 import ExhibitionDateBadge from "../components/ExhibitionDateBadge.svelte";
+import { exhibitions } from "../data/exhibitions";
 
 const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -12,57 +13,19 @@ function formatDateRange(startDate: string, endDate: string): string {
   return `${dateFormat.format(start)} – ${dateFormat.format(end)}`;
 }
 
-const exhibitions = [
-     {
-          title: "Declarations: Printing a New Nation",
-          institution: "Boston Public Library and Leventhal Center",
-          description: "Short description here",
-          startDate: "2026-04-11",
-          endDate: "2026-09-05",
-          link: "https://www.leventhalmap.org/exhibitions/",
-          image: "https://iiif.digitalcommonwealth.org/iiif/2/commonwealth:47429c756/22,6,5529,2874/,1200/0/default.jpg"
-     },
-     {
-          title: "Imagined Nation: America at 250 ",
-          institution: "Boston Athenaeum",
-          description: "Short description here",
-          startDate: "2026-02-12",
-          endDate: "2026-11-14",
-          link: "https://bostonathenaeum.org/whats-on/exhibitions/imagined-nation/",
-          image: "https://ml1bu7iavnet.i.optimole.com/w:970/h:584/q:mauto/f:best/https://bostonathenaeum.org/wp-content/uploads/2026/01/BostonAnthenaeum_0038-1-scaled.jpg"
-     },
-     {
-          title: "1776: Independence & Ideals",
-          institution: "Massachusetts Historical Society",
-          description: "Short description here",
-          startDate: "2026-03-05",
-          endDate: "2026-12-19",
-          link: "https://www.masshist.org/exhibitions",
-          image: "https://www.masshist.org/admin/uploads/small_6275_drafting_for_web_a718d77091.jpg"
-     },
-     {
-          title: "War of Words: A Citizen’s-Eye View of the Revolution ",
-          institution: "Harvard University Libraries, Houghton Library",
-          description: "Short description here",
-          startDate: "2026-05-18",
-          endDate: "2026-08-07",
-          link: "https://library.harvard.edu/collections/exhibits",
-          image: "https://declaration.fas.harvard.edu/sites/g/files/omnuum10521/files/declaration/files/dunlap_broadside_copy_of_the_united_states_declaration_of_independence_loc-2.jpg"
-     },
-     ];
 ---
 
 <InfoLayout>
      <div class="p-4 sm:pt-8 sm:px-12 pb-20 min-h-dvh">
           <H1> Exhibitions </H1>
 
-          <ul class="mt-4 sm:mt-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16 sm:gap-8">
+          <ul class="mt-4 sm:mt-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-16 sm:gap-8">
                {exhibitions.map((exhibition) => (
                     <li>
                          {exhibition.image && (
                               <div class="relative aspect-5/3 mb-4 sm:mb-0 sm:mr-4 w-full">
                                 <Image src={exhibition.image} inferSize alt={exhibition.title} class="absolute inset-0 w-full h-full object-center object-cover rounded-lg shadow-lg" />
-                                <div class="absolute top-2 left-2 z-10">
+                                <div class="absolute top-2 left-2">
                                   <ExhibitionDateBadge client:load startDate={exhibition.startDate} endDate={exhibition.endDate} />
                                 </div>
                               </div>
@@ -82,7 +45,7 @@ const exhibitions = [
                                   {exhibition.institution}
                                 </span>
                               )}
-                              <h2 class="font-serif italic text-4xl text-zinc-100">{exhibition.title}</h2>
+                              <h2 class="font-serif text-3xl text-zinc-100">{exhibition.title}</h2>
                               <p class="text-sm text-zinc-400 text-balance">{exhibition.description}</p>
                               <p class="text-sm text-zinc-400 text-balance">{formatDateRange(exhibition.startDate, exhibition.endDate)}</p>
                          <a

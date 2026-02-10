@@ -1,84 +1,125 @@
 <script lang="ts">
 	import { onMount, onDestroy } from "svelte";
-	import Map from "ol/Map.js";
-	import View from "ol/View.js";
-	import VectorLayer from "ol/layer/Vector.js";
-	import VectorSource from "ol/source/Vector.js";
-	import Feature from "ol/Feature.js";
-	import Point from "ol/geom/Point.js";
-	import { fromLonLat } from "ol/proj.js";
-	import { boundingExtent, getCenter } from "ol/extent.js";
-	import Style from "ol/style/Style.js";
-	import Icon from "ol/style/Icon.js";
-	import { apply } from "ol-mapbox-style";
-	import "ol/ol.css";
+	import { Map, MapStyle, Marker, Popup, config, LngLatBounds } from "@maptiler/sdk";
+	import "@maptiler/sdk/dist/maptiler-sdk.css";
+	import type { Exhibition } from "../data/exhibitions";
 
-	const key = "xzHYzv10Mfc1eJ8Vbizl";
-	const styleJson = `https://api.maptiler.com/maps/streets-v4/style.json?key=${key}`;
+	export let exhibitions: Exhibition[] = [];
 
-	// Editable array of location pins (name, lon, lat)
-	const locations = [
-		{ name: "Boston Public Library", lon: -71.078369, lat: 42.349396 },
-		{ name: "Boston Athenaeum", lon: -71.062158, lat: 42.358044 },
-		{ name: "Massachusetts Historical Society", lon: -71.0982, lat: 42.3462 },
-		{ name: "Harvard Houghton Library", lon: -71.115944, lat: 42.373194 },
-	];
+	const apiKey = "xzHYzv10Mfc1eJ8Vbizl";
 
-	const coords = locations.map((loc) => fromLonLat([loc.lon, loc.lat]));
-	const extent = boundingExtent(coords);
+	// Default center (Boston) and zoom when no exhibitions
+	const defaultCenter: [number, number] = [-71.08, 42.36];
+	const defaultZoom = 16;
 
-	// Pin icon as inline SVG (teardrop marker)
-	const pinSvg =
-		'data:image/svg+xml,' +
-		encodeURIComponent(
-			'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 24 36"><path fill="%231a1a2e" stroke="%23fff" stroke-width="2" d="M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0zm0 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg>'
-		);
+	const dateFormat = new Intl.DateTimeFormat("en-US", {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
+
+	function formatDateRange(start: string, end: string): string {
+		const startD = new Date(start + "T00:00:00");
+		const endD = new Date(end + "T00:00:00");
+		return `${dateFormat.format(startD)} – ${dateFormat.format(endD)}`;
+	}
+
+	function appleMapsUrl(lat: number, lng: number): string {
+		return `https://maps.apple.com/?daddr=${lat},${lng}`;
+	}
+
+	function googleMapsUrl(lat: number, lng: number): string {
+		return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+	}
+
+	function buildPopupContent(ex: Exhibition): string {
+		const dates = formatDateRange(ex.startDate, ex.endDate);
+		const apple = appleMapsUrl(ex.lat, ex.lng);
+		const google = googleMapsUrl(ex.lat, ex.lng);
+		return `
+			<div class="map-popup">
+				${ex.institution ? `<div class="map-popup-institution">${escapeHtml(ex.institution)}</div>` : ""}
+				<div class="map-popup-title">${escapeHtml(ex.title)}</div>
+				<div class="map-popup-dates">${escapeHtml(dates)}</div>
+				<div class="map-popup-actions">
+					<a href="${apple}" target="_blank" rel="noopener noreferrer" class="map-popup-btn">Apple Maps</a>
+					<a href="${google}" target="_blank" rel="noopener noreferrer" class="map-popup-btn">Google Maps</a>
+				</div>
+			</div>
+		`;
+	}
+
+	function escapeHtml(text: string): string {
+		const div = document.createElement("div");
+		div.textContent = text;
+		return div.innerHTML;
+	}
 
 	let mapContainer: HTMLDivElement;
 	let map: Map | null = null;
+	let markers: Marker[] = [];
+	let popup: Popup | null = null;
 
-	onMount(async () => {
+	onMount(() => {
 		if (!mapContainer) return;
-		map = new Map({
-			target: mapContainer,
-			view: new View({
-				constrainResolution: true,
-				center: getCenter(extent),
-				zoom: 16,
-			}),
+
+		config.apiKey = apiKey;
+
+		const hasExhibitions = exhibitions.length > 0;
+
+		// Build initial map options
+		const mapOptions: ConstructorParameters<typeof Map>[0] = {
+			container: mapContainer,
+			style: MapStyle.STREETS,
+			center: defaultCenter,
+			zoom: defaultZoom,
+		};
+
+		// If we have multiple exhibitions, fit bounds to show all pins
+		if (hasExhibitions && exhibitions.length > 1) {
+			const lngs = exhibitions.map((ex) => ex.lng);
+			const lats = exhibitions.map((ex) => ex.lat);
+			const sw: [number, number] = [Math.min(...lngs), Math.min(...lats)];
+			const ne: [number, number] = [Math.max(...lngs), Math.max(...lats)];
+			const bounds = new LngLatBounds(sw, ne);
+			mapOptions.bounds = bounds;
+			mapOptions.fitBoundsOptions = { padding: 100, duration: 0 };
+		} else if (hasExhibitions && exhibitions.length === 1) {
+			mapOptions.center = [exhibitions[0].lng, exhibitions[0].lat];
+			mapOptions.zoom = defaultZoom;
+		}
+
+		map = new Map(mapOptions);
+
+		popup = new Popup({ closeButton: true, closeOnClick: false });
+
+		// Add a marker for each exhibition (MapTiler uses [lng, lat])
+		markers = exhibitions.map((ex, i) => {
+			const marker = new Marker({
+				color: "#1a1a2e",
+			})
+				.setLngLat([ex.lng, ex.lat])
+				.addTo(map!);
+
+			const el = marker.getElement();
+			el.style.cursor = "pointer";
+			el.addEventListener("click", () => {
+				popup!.setLngLat([ex.lng, ex.lat]).setHTML(buildPopupContent(ex)).addTo(map!);
+			});
+
+			return marker;
 		});
-		map.getView().fit(extent, { duration: 0 });
-		await apply(map, styleJson);
-
-		// Build point features from locations
-		const features = locations.map(
-			(loc) =>
-				new Feature({
-					geometry: new Point(fromLonLat([loc.lon, loc.lat])),
-					name: loc.name,
-				})
-		);
-
-		const pinsSource = new VectorSource({ features });
-		const pinsLayer = new VectorLayer({
-			source: pinsSource,
-			style: new Style({
-				image: new Icon({
-					src: pinSvg,
-					anchor: [0.5, 1],
-					scale: 0.8,
-				}),
-			}),
-			zIndex: 100,
-		});
-		map.addLayer(pinsLayer);
-
-
 	});
 
 	onDestroy(() => {
+		markers.forEach((m) => m.remove());
+		markers = [];
+		if (popup) {
+			popup.remove();
+			popup = null;
+		}
 		if (map) {
-			map.setTarget(undefined);
+			map.remove();
 			map = null;
 		}
 	});
@@ -91,4 +132,59 @@
 		width: 100%;
 		height: 100%;
 	}
+
+	:global(.maplibregl-popup-content) {
+		padding: 0;
+		border-radius: 8px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+		min-width: 220px;
+		max-width: 280px;
+	}
+
+	:global(.map-popup) {
+		padding: 12px 14px;
+		font-family: system-ui, -apple-system, sans-serif;
+	}
+
+	:global(.map-popup-institution) {
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		color: #71717a;
+		margin-bottom: 4px;
+	}
+
+	:global(.map-popup-title) {
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: #18181b;
+		line-height: 1.3;
+		margin-bottom: 6px;
+	}
+
+	:global(.map-popup-dates) {
+		font-size: 0.8rem;
+		color: #52525b;
+		margin-bottom: 10px;
+	}
+
+	:global(.map-popup-actions) {
+		display: flex;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+
+	:global(.map-popup-btn) {
+		display: inline-block;
+		padding: 6px 12px;
+		font-size: 0.8rem;
+		font-weight: 500;
+		text-decoration: none;
+		border-radius: 6px;
+		transition: background-color 0.15s;
+		background: #e4e4e7;
+		color: #18181b;
+	}
+
 </style>

@@ -12,6 +12,7 @@
     "@astrojs/svelte": "^7.0.0",
     "@fontsource/geist-sans": "^5.2.5",
     "@fontsource/sedan": "^5.2.7",
+    "@maptiler/sdk": "^3.11.0",
     "@tailwindcss/vite": "^4.1.4",
     "astro": "^5.7.5",
     "astro-loading-indicator": "^0.7.0",
