@@ -1,6 +1,9 @@
 ---
 import H1 from "../components/h1.astro";
 import InfoLayout from "../layouts/InfoLayout.astro";
+import { Image } from 'astro:assets';
+import MHSLogo from "../assets/mhs_logo.jpg";
+import LMECLogo from "../assets/MapCenter_allwhite.png";
 ---
 
 <InfoLayout>
@@ -25,7 +28,19 @@ import InfoLayout from "../layouts/InfoLayout.astro";
                </ul>
 
                <p class="text-zinc-400">For more information, please contact TKTK</p>
-               <p class="text-zinc-400">Institutional logos here</p>
+               <div class="flex items-center gap-2 w-full justify-start h-16">
+                    <Image
+                      src={MHSLogo}
+                      alt="Massachusetts Historical Society"
+                      class="h-full w-auto flex-1 object-contain"
+                    />
+                    <Image
+                      src={LMECLogo}
+                      alt="Leventhal Map & Education Center"
+                      class="h-full w-auto flex-1 object-contain"
+                    />
+                    <div class="flex-1"></div>
+               </div>
           </div>
      </div>
 </InfoLayout>

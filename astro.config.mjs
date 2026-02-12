@@ -13,9 +13,15 @@ export default defineConfig({
 
   integrations: [svelte()],
 
-  // Authorize remote image domains for build-time optimization.
-  // Add hostnames here for any external image URLs used in exhibitions (e.g. "example.com").
+  // Authorize remote image domains for build-time optimization (exhibitions + other content).
   image: {
-    domains: ["www.leventhalmap.org", "leventhalmap.org", "iiif.digitalcommonwealth.org"],
+    domains: [
+      "www.leventhalmap.org",
+      "leventhalmap.org",
+      "iiif.digitalcommonwealth.org",
+      "bostonathenaeum.org",
+      "ml1bu7iavnet.i.optimole.com",
+      "declaration.fas.harvard.edu",
+    ],
   },
 });
