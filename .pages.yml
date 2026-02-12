@@ -1,6 +1,7 @@
 # PagesCMS configuration – exposes content for management at https://app.pagescms.org
 # See https://pagescms.org/docs/configuration
 
+media: src/assets
 content:
   - name: events
     label: Events
