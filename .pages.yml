@@ -1,0 +1,49 @@
+# PagesCMS configuration – exposes content for management at https://app.pagescms.org
+# See https://pagescms.org/docs/configuration
+
+media: src/assets
+content:
+  - name: events
+    label: Events
+    type: collection
+    path: src/content/events
+    format: yaml-frontmatter
+    fields:
+      - name: isDraft
+        label: Draft
+        type: boolean
+        description: Hide this event from public listing when true.
+        default: false
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: snippet
+        label: Snippet
+        type: text
+        description: Short description of the event.
+      - name: institution
+        label: Institution
+        type: string
+        required: true
+      - name: eventDate
+        label: Event date
+        type: date
+        required: true
+        options:
+          time: true
+      - name: url
+        label: URL
+        type: string
+        required: true
+        description: Link to more information or registration.
+        pattern:
+          regex: "^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(\\/[^\\s]*)?$"
+          message: Enter a valid URL (e.g. https://example.org).
+    view:
+      fields: [title, institution, eventDate, isDraft]
+      primary: title
+      sort: [eventDate, title]
+      default:
+        sort: eventDate
+        order: desc

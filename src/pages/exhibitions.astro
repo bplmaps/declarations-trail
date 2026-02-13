@@ -5,6 +5,17 @@ import InfoLayout from "../layouts/InfoLayout.astro";
 import ExhibitionDateBadge from "../components/ExhibitionDateBadge.svelte";
 import { exhibitions } from "../data/exhibitions";
 
+// Local exhibition images in src/assets – map public path to imported asset for optimized <Image>
+import mhsGoddard from "../assets/mhs_goddard.jpg";
+
+const LOCAL_EXHIBITION_IMAGES: Record<string, typeof mhsGoddard> = {
+  "/assets/mhs_goddard.jpg": mhsGoddard,
+};
+
+function isLocalAsset(imagePath: string): imagePath is keyof typeof LOCAL_EXHIBITION_IMAGES {
+  return imagePath in LOCAL_EXHIBITION_IMAGES;
+}
+
 const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
 function formatDateRange(startDate: string, endDate: string): string {
@@ -24,7 +35,12 @@ function formatDateRange(startDate: string, endDate: string): string {
                     <li>
                          {exhibition.image && (
                               <div class="relative aspect-5/3 mb-4 sm:mb-0 sm:mr-4 w-full">
-                                <Image src={exhibition.image} inferSize alt={exhibition.title} class="absolute inset-0 w-full h-full object-center object-cover rounded-lg shadow-lg" />
+                                <Image
+                                  src={isLocalAsset(exhibition.image) ? LOCAL_EXHIBITION_IMAGES[exhibition.image] : exhibition.image}
+                                  inferSize
+                                  alt={exhibition.title}
+                                  class="absolute inset-0 w-full h-full object-center object-cover rounded-lg shadow-lg"
+                                />
                                 <div class="absolute top-2 left-2">
                                   <ExhibitionDateBadge client:load startDate={exhibition.startDate} endDate={exhibition.endDate} />
                                 </div>
@@ -47,7 +63,7 @@ function formatDateRange(startDate: string, endDate: string): string {
                               )}
                               <h2 class="font-serif text-3xl text-zinc-100">{exhibition.title}</h2>
                               <p class="text-sm text-zinc-400 text-balance">{exhibition.description}</p>
-                              <p class="text-sm text-zinc-400 text-balance">{formatDateRange(exhibition.startDate, exhibition.endDate)}</p>
+                              <p class="text-sm text-zinc-400 font-semibold text-balance">{formatDateRange(exhibition.startDate, exhibition.endDate)}</p>
                          <a
                               href={exhibition.link}
                               target="_blank"
