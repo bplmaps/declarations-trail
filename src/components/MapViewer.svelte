@@ -3,10 +3,14 @@
 	import { Map, MapStyle, Marker, Popup, config, LngLatBounds } from "@maptiler/sdk";
 	import "@maptiler/sdk/dist/maptiler-sdk.css";
 	import type { Exhibition } from "../data/exhibitions";
+	import { WarpedMapLayer } from '@allmaps/maplibre'
 
 	export let exhibitions: Exhibition[] = [];
 
 	const apiKey = "xzHYzv10Mfc1eJ8Vbizl";
+
+	const annotationUrl = 'https://annotations.allmaps.org/manifests/acd37b143c84dc34'
+	const warpedMapLayer = new WarpedMapLayer()
 
 	// Default center (Boston) and zoom when no exhibitions
 	const defaultCenter: [number, number] = [-71.08, 42.36];
@@ -60,6 +64,22 @@
 	let markers: Marker[] = [];
 	let popup: Popup | null = null;
 
+	let show1776Map = true;
+
+
+	function toggle1776Map(): void {
+		show1776Map = !show1776Map;
+		if (!map) return;
+		try {
+			if (show1776Map) {
+				warpedMapLayer.setLayerOptions({visible: true})
+			} else {
+				warpedMapLayer.setLayerOptions({visible: false})
+
+			}
+		} catch (_) {}
+	}
+
 	onMount(() => {
 		if (!mapContainer) return;
 
@@ -90,6 +110,11 @@
 		}
 
 		map = new Map(mapOptions);
+		map.on("load", () => {
+			map.addLayer(warpedMapLayer);
+			warpedMapLayer.addGeoreferenceAnnotationByUrl(annotationUrl);
+			
+		});
 
 		popup = new Popup({ closeButton: true, closeOnClick: false });
 
@@ -125,12 +150,55 @@
 	});
 </script>
 
-<div bind:this={mapContainer} class="map-viewer"></div>
+<div class="map-viewer-wrapper">
+	<div class="map-controls">
+		<label class="map-controls-toggle">
+			<input type="checkbox" checked={show1776Map} on:change={toggle1776Map} />
+			<span>Show 1776 map</span>
+		</label>
+	</div>
+	<div bind:this={mapContainer} class="map-viewer"></div>
+</div>
 
 <style>
+	.map-viewer-wrapper {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+
 	.map-viewer {
 		width: 100%;
 		height: 100%;
+	}
+
+	.map-controls {
+		position: absolute;
+		top: 12px;
+		left: 12px;
+		z-index: 10;
+		background: rgba(255, 255, 255, 0.95);
+		padding: 10px 14px;
+		border-radius: 8px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+	}
+
+	.map-controls-toggle {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		cursor: pointer;
+		font-size: 0.9rem;
+		font-weight: 500;
+		color: #18181b;
+		user-select: none;
+	}
+
+	.map-controls-toggle input[type="checkbox"] {
+		width: 18px;
+		height: 18px;
+		cursor: pointer;
+		accent-color: #1a1a2e;
 	}
 
 	:global(.maplibregl-popup-content) {
