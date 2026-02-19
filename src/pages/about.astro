@@ -2,7 +2,7 @@
 import H1 from "../components/h1.astro";
 import InfoLayout from "../layouts/InfoLayout.astro";
 import { Image } from 'astro:assets';
-import MHSLogo from "../assets/mhs_logo.jpg";
+import MHSLogo from "../assets/mhs_logo.png";
 import LMECLogo from "../assets/MapCenter_allwhite.png";
 ---
 
@@ -17,30 +17,26 @@ import LMECLogo from "../assets/MapCenter_allwhite.png";
           </div>
 
           <div class="space-y-2 text-base sm:text-lg">
-               <h2 class="px-4 text-zinc-400 underline underline-offset-4 decoration-zinc-500">Produced by</h2>
+               <h2 class="py-4 text-zinc-400 font-bold decoration-zinc-500">A partnership between</h2>
 
-               <ul class="px-4 text-zinc-400 list-disc list-outside">
-                    <li>Leventhal Map & Education Center at the Boston Public Library</li>
-                    <li>Boston Public Library</li>
-                    <li>Massachusetts Historical Society</li>
-                    <li>Boston Athenaeum</li>
-                    <li>Harvard University Libraries</li>
-               </ul>
 
-               <p class="text-zinc-400">For more information, please contact TKTK</p>
                <div class="flex items-center gap-2 w-full justify-start h-16">
+                    <Image
+                    src={LMECLogo}
+                    alt="Leventhal Map & Education Center"
+                    class="h-full w-auto flex-1 object-contain"
+                  />
                     <Image
                       src={MHSLogo}
                       alt="Massachusetts Historical Society"
                       class="h-full w-auto flex-1 object-contain"
                     />
-                    <Image
-                      src={LMECLogo}
-                      alt="Leventhal Map & Education Center"
-                      class="h-full w-auto flex-1 object-contain"
-                    />
                     <div class="flex-1"></div>
+
                </div>
+
+               <p class="text-zinc-400 text-sm">For more information, please contact <a href="mailto:info@leventhalmap.org">info@leventhalmap.org</a></p>
+
           </div>
      </div>
 </InfoLayout>
