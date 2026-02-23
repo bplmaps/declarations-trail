@@ -1,14 +1,17 @@
 ---
 import H1 from "../components/h1.astro";
 import InfoLayout from "../layouts/InfoLayout.astro";
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 import MHSLogo from "../assets/mhs_logo.png";
 import LMECLogo from "../assets/MapCenter_allwhite.png";
 import AthenaeumLogo from "../assets/athenaeum_logo.png";
+import BPLLogo from "../assets/bpl_logo.png";
 ---
 
 <InfoLayout>
-     <div class="p-4 sm:pt-8 sm:px-12 pb-20 min-h-dvh flex flex-col justify-between gap-32">
+     <div
+          class="p-4 sm:pt-8 sm:px-12 pb-20 min-h-dvh flex flex-col justify-between gap-32"
+     >
           <div class="space-y-4 sm:space-y-12">
                <H1> About this initiative </H1>
 
@@ -18,31 +21,39 @@ import AthenaeumLogo from "../assets/athenaeum_logo.png";
           </div>
 
           <div class="space-y-2 text-base sm:text-lg">
-               <h2 class="py-4 text-zinc-400 font-bold decoration-zinc-500">A partnership between</h2>
+               <h2 class="py-4 text-zinc-400 font-bold decoration-zinc-500">
+                    A partnership between
+               </h2>
 
-
-               <div class="flex items-center gap-4 w-full justify-start h-16">
+               <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 w-full justify-start h-auto sm:h-16">
+                    
                     <Image
-                    src={LMECLogo}
-                    alt="Leventhal Map & Education Center"
-                    class="h-full w-auto flex-1 object-contain"
-                  />
-                    <Image
-                      src={MHSLogo}
-                      alt="Massachusetts Historical Society"
-                      class="h-full w-auto flex-1 object-contain"
-                    />   
-                    <Image
-                      src={AthenaeumLogo}
-                      alt="Boston Athenaeum"
-                      class="h-full w-auto flex-1 object-contain"
+                         src={LMECLogo}
+                         alt="Leventhal Map & Education Center"
+                         class="w-auto flex-1 object-contain max-h-16 self-start"
                     />
-                    <div class="flex-1"></div>
-
+                    <Image
+                         src={BPLLogo}
+                         alt="Boston Public Library"
+                         class="w-auto flex-1 object-contain max-h-16 self-start"
+                    />
+                    <Image
+                         src={MHSLogo}
+                         alt="Massachusetts Historical Society"
+                         class="w-auto flex-1 object-contain max-h-16 self-start"
+                    />
+                    <Image
+                         src={AthenaeumLogo}
+                         alt="Boston Athenaeum"
+                         class="w-auto flex-1 object-contain max-h-16 self-start"
+                    />
                </div>
 
-               <p class="text-zinc-400 text-sm">For more information, please contact <a href="mailto:info@leventhalmap.org">info@leventhalmap.org</a></p>
-
+               <p class="text-zinc-400 text-sm">
+                    For more information, please contact <a
+                         href="mailto:info@leventhalmap.org"
+                         >info@leventhalmap.org</a>
+               </p>
           </div>
      </div>
 </InfoLayout>
