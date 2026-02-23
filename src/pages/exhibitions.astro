@@ -4,16 +4,20 @@ import H1 from "../components/h1.astro";
 import InfoLayout from "../layouts/InfoLayout.astro";
 import ExhibitionDateBadge from "../components/ExhibitionDateBadge.svelte";
 import { exhibitions } from "../data/exhibitions";
+import type { ImageMetadata } from "astro";
 
-// Local exhibition images in src/assets – map public path to imported asset for optimized <Image>
-import mhsGoddard from "../assets/mhs_goddard.jpg";
+const LOCAL_EXHIBITION_IMAGES = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/*.{jpg,jpeg,png,webp,avif,gif,svg}",
+  { eager: true }
+);
 
-const LOCAL_EXHIBITION_IMAGES: Record<string, typeof mhsGoddard> = {
-  "/assets/mhs_goddard.jpg": mhsGoddard,
-};
+function resolveExhibitionImage(imagePath: string): string | ImageMetadata {
+  if (!imagePath.startsWith("/assets/")) return imagePath;
 
-function isLocalAsset(imagePath: string): imagePath is keyof typeof LOCAL_EXHIBITION_IMAGES {
-  return imagePath in LOCAL_EXHIBITION_IMAGES;
+  const assetKey = `../assets/${imagePath.replace("/assets/", "")}`;
+  const localImage = LOCAL_EXHIBITION_IMAGES[assetKey];
+
+  return localImage?.default ?? imagePath;
 }
 
 const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -35,12 +39,28 @@ function formatDateRange(startDate: string, endDate: string): string {
                     <li>
                          {exhibition.image && (
                               <div class="relative aspect-5/3 mb-4 sm:mb-0 sm:mr-4 w-full">
-                                <Image
-                                  src={isLocalAsset(exhibition.image) ? LOCAL_EXHIBITION_IMAGES[exhibition.image] : exhibition.image}
-                                  inferSize
-                                  alt={exhibition.title}
-                                  class="absolute inset-0 w-full h-full object-center object-cover rounded-lg shadow-lg"
-                                />
+                                {(() => {
+                                  const imageSrc = resolveExhibitionImage(exhibition.image);
+
+                                  if (typeof imageSrc === "string") {
+                                    return (
+                                      <Image
+                                        src={imageSrc}
+                                        inferSize
+                                        alt={exhibition.title}
+                                        class="absolute inset-0 w-full h-full object-center object-cover rounded-lg shadow-lg"
+                                      />
+                                    );
+                                  }
+
+                                  return (
+                                    <Image
+                                      src={imageSrc}
+                                      alt={exhibition.title}
+                                      class="absolute inset-0 w-full h-full object-center object-cover rounded-lg shadow-lg"
+                                    />
+                                  );
+                                })()}
                                 <div class="absolute top-2 left-2">
                                   <ExhibitionDateBadge client:load startDate={exhibition.startDate} endDate={exhibition.endDate} />
                                 </div>

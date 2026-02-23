@@ -4,6 +4,7 @@ import InfoLayout from "../layouts/InfoLayout.astro";
 import { Image } from 'astro:assets';
 import MHSLogo from "../assets/mhs_logo.png";
 import LMECLogo from "../assets/MapCenter_allwhite.png";
+import AthenaeumLogo from "../assets/athenaeum_logo.png";
 ---
 
 <InfoLayout>
@@ -20,7 +21,7 @@ import LMECLogo from "../assets/MapCenter_allwhite.png";
                <h2 class="py-4 text-zinc-400 font-bold decoration-zinc-500">A partnership between</h2>
 
 
-               <div class="flex items-center gap-2 w-full justify-start h-16">
+               <div class="flex items-center gap-4 w-full justify-start h-16">
                     <Image
                     src={LMECLogo}
                     alt="Leventhal Map & Education Center"
@@ -29,6 +30,12 @@ import LMECLogo from "../assets/MapCenter_allwhite.png";
                     <Image
                       src={MHSLogo}
                       alt="Massachusetts Historical Society"
+                      class="h-full w-auto flex-1 object-contain"
+                    />   
+                    <Image
+                      src={AthenaeumLogo}
+                      style="filter: grayscale(1);" 
+                      alt="Boston Athenaeum"
                       class="h-full w-auto flex-1 object-contain"
                     />
                     <div class="flex-1"></div>

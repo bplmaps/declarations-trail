@@ -25,11 +25,11 @@ export const exhibitions: Exhibition[] = [
 	{
 		title: "Imagined Nation: America at 250",
 		institution: "Boston Athenaeum",
-		description: "Short description here",
+		description: "Explore how the nation has been continuously envisioned in art and print culture since its founding. View multiple early printings of the Declaration of Independence alongside George Washington's library, paintings, sculpture, prints, and more.",
 		startDate: "2026-02-12",
 		endDate: "2026-11-14",
 		link: "https://bostonathenaeum.org/whats-on/exhibitions/imagined-nation/",
-		image: "https://ml1bu7iavnet.i.optimole.com/w:970/h:584/q:mauto/f:best/https://bostonathenaeum.org/wp-content/uploads/2026/01/BostonAnthenaeum_0038-1-scaled.jpg",
+		image: "/assets/202602_ImaginedNationCases_Rotation1_013.jpg",
 		lat: 42.358044,
 		lng: -71.062158,
 	},
