@@ -8,7 +8,7 @@ const events = defineCollection({
         title: z.string(),
         snippet: z.string(),
         institution: z.string(),
-        eventDate: z.coerce.date(),
+        eventDate: z.string(),
         url: z.string().url(),
     }),
 });

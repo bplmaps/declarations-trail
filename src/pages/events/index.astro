@@ -1,6 +1,6 @@
 ---
 import H1 from "../../components/h1.astro";
-import { formatDate } from "../../lib/utils";
+import { formatDate, parseEventDate } from "../../lib/utils";
 import { getCollection } from "astro:content";
 import InfoLayout from "../../layouts/InfoLayout.astro";
 
@@ -9,7 +9,8 @@ const events = allEvents
   .filter((event) => !event.data.isDraft)
   .sort(
     (a, b) =>
-      new Date(a.data.eventDate).getTime() - new Date(b.data.eventDate).getTime()
+      parseEventDate(a.data.eventDate).getTime() -
+      parseEventDate(b.data.eventDate).getTime()
   );
 ---
 
