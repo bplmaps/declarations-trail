@@ -40,10 +40,10 @@ content:
         pattern:
           regex: "^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(\\/[^\\s]*)?$"
           message: Enter a valid URL (e.g. https://example.org).
+    filename: "{eventDate}-{title}.md"
     view:
       fields: [title, institution, eventDate, isDraft]
       primary: title
-      filename: "{eventDate}-{title}.md"
       sort: [eventDate, title]
       default:
         sort: eventDate
