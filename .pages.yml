@@ -35,7 +35,7 @@ content:
       - name: url
         label: URL
         type: string
-        required: true
+        required: false
         description: Link to more information or registration.
         pattern:
           regex: "^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(\\/[^\\s]*)?$"
