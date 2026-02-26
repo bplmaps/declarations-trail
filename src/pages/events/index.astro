@@ -32,10 +32,10 @@ const events = allEvents
           <p class="text-base text-zinc-400">{event.data.snippet}</p>
           <p class="text-sm text-zinc-500">
             {formatDate(event.data.eventDate, { withTime: true })}
-            {event.data.url && (
+
               <>
                 {" "}&middot;{" "}
-                {event.data.url.trim() !== "" ? (
+                {event.data.url?.trim() ? (
                   <a
                     href={event.data.url}
                     class="underline text-zinc-400 hover:text-zinc-300"
@@ -50,7 +50,6 @@ const events = allEvents
                   </span>
                 )}
               </>
-            )}
           </p>
 
         </li>
