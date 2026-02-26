@@ -39,7 +39,7 @@ content:
         required: false
         description: Link to more information or registration.
         pattern:
-          regex: "^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(\\/[^\\s]*)?$"
+          regex: "^$|^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(\\/[^\\s]*)?$"
           message: Enter a valid URL (e.g. https://example.org).
     filename: '{year}-{month}-{day}-{hour}-{minute}-{second}-{primary}.md'
     view:
