@@ -43,6 +43,7 @@ content:
     view:
       fields: [title, institution, eventDate, isDraft]
       primary: title
+      filename: "{eventDate}-{title}.md"
       sort: [eventDate, title]
       default:
         sort: eventDate
