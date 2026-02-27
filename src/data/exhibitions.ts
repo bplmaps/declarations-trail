@@ -46,13 +46,24 @@ export const exhibitions: Exhibition[] = [
 	},
 	{
 		title: "War of Words: A Citizen's-Eye View of the Revolution ",
-		institution: "Harvard University Libraries, Houghton Library",
-		description: "Short description here",
+		institution: "Harvard Library, Houghton Library",
+		description: "From the first protests against British taxation to the treaty that ended the war, War of Words brings together the posters, pamphlets, newspapers, and images that brought news of the American Revolution to those who lived through it.",
 		startDate: "2026-05-18",
 		endDate: "2026-08-07",
-		link: "https://library.harvard.edu/collections/exhibits",
-		image: "https://declaration.fas.harvard.edu/sites/g/files/omnuum10521/files/declaration/files/dunlap_broadside_copy_of_the_united_states_declaration_of_independence_loc-2.jpg",
+		link: "https://library.harvard.edu/exhibits/war-words",
+		image: "/assets/houghton_dunlap.jpg",
 		lat: 42.373194,
 		lng: -71.115944,
+	},
+	{
+		title: "Harvard and the American Revolution",
+		institution: "Harvard Library, Harvard University Archives",
+		description: "This exhibition explores Harvard’s many roles in that struggle—as a Continental Army headquarters and as a community where bold ideas and dissent flourished—through objects, documents, and stories from the collections of the Harvard University Archives.",
+		startDate: "2026-05-30",
+		endDate: "2026-12-18",
+		link: "https://library.harvard.edu/exhibits/harvard-and-american-revolution",
+		image: "/assets/hu_archives_cambridge_common.jpeg",
+		lat: 42.37341,
+		lng: -71.1156
 	},
 ];
