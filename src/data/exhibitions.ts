@@ -59,7 +59,7 @@ export const exhibitions: Exhibition[] = [
 		title: "Harvard and the American Revolution",
 		institution: "Harvard Library, Harvard University Archives",
 		description: "This exhibition explores Harvard’s many roles in that struggle—as a Continental Army headquarters and as a community where bold ideas and dissent flourished—through objects, documents, and stories from the collections of the Harvard University Archives.",
-		startDate: "2026-05-30",
+		startDate: "2026-03-30",
 		endDate: "2026-12-18",
 		link: "https://library.harvard.edu/exhibits/harvard-and-american-revolution",
 		image: "/assets/hu_archives_cambridge_common.jpeg",
