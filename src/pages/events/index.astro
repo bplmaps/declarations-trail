@@ -1,12 +1,16 @@
 ---
 import H1 from "../../components/h1.astro";
-import { formatDate, parseEventDate } from "../../lib/utils";
+import { formatDate, nowInNewYork, parseEventDate } from "../../lib/utils";
 import { getCollection } from "astro:content";
 import InfoLayout from "../../layouts/InfoLayout.astro";
 
 const allEvents = await getCollection("events");
+const now = nowInNewYork();
 const events = allEvents
   .filter((event) => !event.data.isDraft)
+  .filter(
+    (event) => parseEventDate(event.data.eventDate).getTime() > now.getTime()
+  )
   .sort(
     (a, b) =>
       parseEventDate(a.data.eventDate).getTime() -

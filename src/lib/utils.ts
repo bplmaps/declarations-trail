@@ -71,6 +71,30 @@ export function parseEventDate(date: Date | string): Date {
   return new Date(utcMillis);
 }
 
+export function nowInNewYork(): Date {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(new Date());
+
+  const byType = Object.fromEntries(
+    parts
+      .filter((p) => p.type !== "literal")
+      .map((p) => [p.type, p.value])
+  ) as Record<string, string>;
+
+  // Build an ISO-like local timestamp (no timezone suffix) and parse it as NY.
+  return parseEventDate(
+    `${byType.year}-${byType.month}-${byType.day}T${byType.hour}:${byType.minute}:${byType.second}`
+  );
+}
+
 export function formatDate(date: Date | string, options?: FormatDateOptions) {
   const d = parseEventDate(date);
   const tz = options?.timeZone ?? DEFAULT_TIMEZONE;
