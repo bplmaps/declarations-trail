@@ -1,0 +1,18 @@
+name: Netlify daily build
+
+on:
+  schedule:
+    # GitHub Actions cron is UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build hook
+        env:
+          NETLIFY_BUILD_HOOK_URL: "${{ secrets.NETLIFY_BUILD_HOOK_URL || 'https://api.netlify.com/build_hooks/69e0ef6b216d9f40880691d3' }}"
+        run: |
+          set -euo pipefail
+          curl -fsS -X POST "$NETLIFY_BUILD_HOOK_URL"
