@@ -149,6 +149,8 @@
 			style: MapStyle.STREETS,
 			center: defaultCenter,
 			zoom: defaultZoom,
+			pitch: 0,
+			maxPitch: 0,
 		};
 
 		// If we have multiple exhibitions, fit bounds to show all pins
