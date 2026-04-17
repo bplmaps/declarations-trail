@@ -9,12 +9,12 @@
 		LngLatBounds,
 	} from "@maptiler/sdk";
 	import "@maptiler/sdk/dist/maptiler-sdk.css";
-	import type { Exhibition } from "../data/exhibitions";
+	import type { MapExhibition } from "../data/exhibitions";
 	import { WarpedMapLayer } from "@allmaps/maplibre";
 	import mbtaRoutesUrl from "../assets/mbta_routes.geojson?url";
 	import mbtaStationsUrl from "../assets/mbta_stations.geojson?url";
 
-	export let exhibitions: Exhibition[] = [];
+	export let exhibitions: MapExhibition[] = [];
 
 	const apiKey = "xzHYzv10Mfc1eJ8Vbizl";
 
@@ -61,7 +61,7 @@
 		return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
 	}
 
-	function buildPopupContent(ex: Exhibition): string {
+	function buildPopupContent(ex: MapExhibition): string {
 		const dates = formatDateRange(ex.startDate, ex.endDate);
 		const apple = appleMapsUrl(ex.lat, ex.lng);
 		const google = googleMapsUrl(ex.lat, ex.lng);

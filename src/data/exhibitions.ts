@@ -6,8 +6,21 @@ export interface Exhibition {
 	endDate: string;
 	link: string;
 	image: string;
-	lat: number;
-	lng: number;
+	/** Omitted for extended-only entries that do not appear on the map. */
+	lat?: number;
+	lng?: number;
+	/** When true, listed under Extended Itineraries and excluded from the map. */
+	extended?: boolean;
+}
+
+/** Exhibitions shown as map markers (excludes extended itineraries). */
+export type MapExhibition = Exhibition & { lat: number; lng: number };
+
+export function mapExhibitions(exhibitions: Exhibition[]): MapExhibition[] {
+	return exhibitions.filter(
+		(e): e is MapExhibition =>
+			!e.extended && typeof e.lat === "number" && typeof e.lng === "number",
+	);
 }
 
 export const exhibitions: Exhibition[] = [
@@ -75,6 +88,17 @@ export const exhibitions: Exhibition[] = [
 		link: "https://library.harvard.edu/exhibits/charting-independence-1",
 		image: "/assets/hmc.jpg",
 		lat: 42.37341,
-		lng: -71.1156
+		lng: -71.1156,
+	},
+	{
+		title: "Revolutionary Legacies",
+		institution: "Concord Museum",
+		description:
+			"Memory and legacy come together in this exhibition examining how we remember the founding of the nation and asks what we will build for the future. Among the historic objects and contemporary works on view, a Declaration of Independence in dialogue with a commissioned poem by Bonnie Hartley (Stockbridge-Munsee Mohican), explores the 250th.",
+		startDate: "2026-03-27",
+		endDate: "2026-09-07",
+		link: "https://concordmuseum.org/event/revolutionary-legacies/",
+		image: "/assets/concord_banner.jpg",
+		extended: true,
 	},
 ];

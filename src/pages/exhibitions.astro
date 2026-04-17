@@ -1,111 +1,32 @@
 ---
-import { Image } from 'astro:assets';
 import H1 from "../components/h1.astro";
+import ExhibitionListItem from "../components/ExhibitionListItem.astro";
 import InfoLayout from "../layouts/InfoLayout.astro";
-import ExhibitionDateBadge from "../components/ExhibitionDateBadge.svelte";
 import { exhibitions } from "../data/exhibitions";
-import type { ImageMetadata } from "astro";
 
-const LOCAL_EXHIBITION_IMAGES = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/*.{jpg,jpeg,png,webp,avif,gif,svg}",
-  { eager: true }
-);
-
-function resolveExhibitionImage(imagePath: string): string | ImageMetadata {
-  if (!imagePath.startsWith("/assets/")) return imagePath;
-
-  const assetKey = `../assets/${imagePath.replace("/assets/", "")}`;
-  const localImage = LOCAL_EXHIBITION_IMAGES[assetKey];
-
-  return localImage?.default ?? imagePath;
-}
-
-const dateFormat = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
-function formatDateRange(startDate: string, endDate: string): string {
-  const start = new Date(startDate + 'T00:00:00');
-  const end = new Date(endDate + 'T00:00:00');
-  return `${dateFormat.format(start)} – ${dateFormat.format(end)}`;
-}
-
+const mainExhibitions = exhibitions.filter((e) => !e.extended);
+const extendedExhibitions = exhibitions.filter((e) => e.extended);
 ---
 
 <InfoLayout>
-     <div class="p-4 sm:pt-8 sm:px-12 pb-20 min-h-dvh">
-          <H1> Exhibitions </H1>
+	<div class="p-4 sm:pt-8 sm:px-12 pb-20 min-h-dvh">
+		<H1> Exhibitions </H1>
 
-          <ul class="mt-4 sm:mt-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-16 sm:gap-8">
-               {exhibitions.map((exhibition) => (
-                    <li>
-                         {exhibition.image && (
-                              <div class="relative aspect-5/3 mb-4 sm:mb-0 sm:mr-4 w-full">
-                                {(() => {
-                                  const imageSrc = resolveExhibitionImage(exhibition.image);
+		<ul class="mt-4 sm:mt-12 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-16 sm:gap-8">
+			{mainExhibitions.map((exhibition) => <ExhibitionListItem exhibition={exhibition} />)}
+		</ul>
 
-                                  if (typeof imageSrc === "string") {
-                                    return (
-                                      <Image
-                                        src={imageSrc}
-                                        inferSize
-                                        alt={exhibition.title}
-                                        class="absolute inset-0 w-full h-full object-center object-cover rounded-lg shadow-lg"
-                                      />
-                                    );
-                                  }
+		{
+			extendedExhibitions.length > 0 && (
+				<section class="mt-20 sm:mt-24">
+          <H1>Extended Itineraries</H1>
 
-                                  return (
-                                    <Image
-                                      src={imageSrc}
-                                      alt={exhibition.title}
-                                      class="absolute inset-0 w-full h-full object-center object-cover rounded-lg shadow-lg"
-                                    />
-                                  );
-                                })()}
-                                <div class="absolute top-2 left-2">
-                                  <ExhibitionDateBadge client:load startDate={exhibition.startDate} endDate={exhibition.endDate} />
-                                </div>
-                              </div>
-                            )}
-                         <div class="p-1 sm:p-2">
-                              {exhibition.institution && (
-                                <span
-                                  class="block text-sm text-zinc-400 weight-semibold text-balance w-fit mb-2"
-                                  style="
-                                    display: inline-block;
-                                    border-bottom: 6px solid rgba(113,113,122,0.3); /* zinc-400 30% */
-                                    line-height: 1.1;
-                                    position: relative;
-                                    bottom: 0.3em;
-                                  "
-                                >
-                                  {exhibition.institution}
-                                </span>
-                              )}
-                              <h2 class="font-serif text-3xl text-zinc-100">{exhibition.title}</h2>
-                              <p class="text-sm text-zinc-400 text-balance">{exhibition.description}</p>
-                              <p class="text-sm text-zinc-400 font-semibold text-balance">{formatDateRange(exhibition.startDate, exhibition.endDate)}</p>
-                         <a
-                              href={exhibition.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-zinc-100 text-zinc-900 font-semibold text-sm uppercase tracking-wide ring-2 ring-transparent hover:ring-zinc-100 hover:ring-3 transition-all duration-200 shadow group mt-4 cursor-pointer"
-                              style="text-decoration: none;"
-                         >
-                              Learn more
-                              <svg
-                                   class="ml-1 w-5 h-5 transition-transform duration-200 group-hover:translate-x-1"
-                                   xmlns="http://www.w3.org/2000/svg"
-                                   fill="none"
-                                   viewBox="0 0 24 24"
-                                   stroke="currentColor"
-                                   stroke-width="2"
-                              >
-                                   <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                              </svg>
-                         </a>
-                         </div>
-                    </li>
-               ))}
-          </ul>
-     </div>
+					<ul class="mt-16 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-16 sm:gap-8">
+						{extendedExhibitions.map((exhibition) => <ExhibitionListItem exhibition={exhibition} />)}
+					</ul>
+
+				</section>
+			)
+		}
+	</div>
 </InfoLayout>
