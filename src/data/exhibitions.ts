@@ -101,4 +101,15 @@ export const exhibitions: Exhibition[] = [
 		image: "/assets/concord_banner.jpg",
 		extended: true,
 	},
+	{
+		title: "Pressing Importance",
+		institution: "Peabody Essex Museum",
+		description:
+			"Pressing Importance coincides with Revolution 250 and Salem 400+ commemorations. The exhibition features three early editions of the Declaration of Independence, plus Revolutionary-era manuscripts, newspapers, pamphlets and broadsides. It offers a rare opportunity to examine the critical role that Salem played in the printing and circulation of the Declaration, primarily through the story of Ezekiel Russell, a local printer.",
+		startDate: "2026-05-02",
+		endDate: "2027-07-25",
+		link: "https://www.pem.org/exhibitions/pressing-importance-salem-and-the-declaration-of-independence",
+		image: "/assets/pem_dec.jpg",
+		extended: true,
+	},
 ];
