@@ -102,7 +102,7 @@ export const exhibitions: Exhibition[] = [
 		extended: true,
 	},
 	{
-		title: "Pressing Importance",
+		title: "Pressing Importance: Salem and the Declaration of Independence",
 		institution: "Peabody Essex Museum",
 		description:
 			"Pressing Importance coincides with Revolution 250 and Salem 400+ commemorations. The exhibition features three early editions of the Declaration of Independence, plus Revolutionary-era manuscripts, newspapers, pamphlets and broadsides. It offers a rare opportunity to examine the critical role that Salem played in the printing and circulation of the Declaration, primarily through the story of Ezekiel Russell, a local printer.",
