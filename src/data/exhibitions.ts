@@ -85,7 +85,7 @@ export const exhibitions: Exhibition[] = [
 		description: "The exhibition presents a selection of the nearly 2,000 revolutionary-era maps in the collection that cover a range of theaters of war and helped shape the general spatial understanding of events for those near and far.",
 		startDate: "2026-05-15",
 		endDate: "2026-11-30",
-		link: "https://library.harvard.edu/exhibits/charting-independence-1",
+		link: "https://library.harvard.edu/exhibits/charting-independence",
 		image: "/assets/hmc.jpg",
 		lat: 42.37341,
 		lng: -71.1156,
