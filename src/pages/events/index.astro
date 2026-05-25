@@ -6,16 +6,24 @@ import InfoLayout from "../../layouts/InfoLayout.astro";
 
 const allEvents = await getCollection("events");
 const now = nowInNewYork();
+
 const events = allEvents
   .filter((event) => !event.data.isDraft)
   .filter(
-    (event) => parseEventDate(event.data.eventDate).getTime() > now.getTime()
+    (event) =>
+      event.data.ongoing === true ||
+      (event.data.eventDate != null &&
+        parseEventDate(event.data.eventDate).getTime() > now.getTime())
   )
-  .sort(
-    (a, b) =>
+  .sort((a, b) => {
+    if (a.data.ongoing && !b.data.ongoing) return -1;
+    if (!a.data.ongoing && b.data.ongoing) return 1;
+    if (!a.data.eventDate || !b.data.eventDate) return 0;
+    return (
       parseEventDate(a.data.eventDate).getTime() -
       parseEventDate(b.data.eventDate).getTime()
-  );
+    );
+  });
 ---
 
 <InfoLayout>
@@ -35,7 +43,11 @@ const events = allEvents
           )}
           <p class="text-base text-zinc-400">{event.data.snippet}</p>
           <p class="text-sm text-zinc-500">
-            {formatDate(event.data.eventDate, { withTime: true })}
+            {event.data.ongoing ? (
+              <span class="font-medium text-zinc-400">Ongoing</span>
+            ) : (
+              formatDate(event.data.eventDate!, { withTime: true })
+            )}
 
               <>
                 {" "}&middot;{" "}

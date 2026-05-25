@@ -14,6 +14,11 @@ content:
         type: boolean
         description: Hide this event from public listing when true.
         default: false
+      - name: ongoing
+        label: Ongoing
+        type: boolean
+        description: Mark as ongoing to display at the top of the list without a specific date.
+        default: false
       - name: title
         label: Title
         type: string
@@ -29,7 +34,7 @@ content:
       - name: eventDate
         label: Event date
         type: date
-        required: true
+        required: false
         options:
           time: true
           format: "yyyy-MM-dd'T'HH:mm"
